@@ -21,9 +21,9 @@ public class LevelEndEvent implements StateEvent {
         json.addProperty("reward", reward);
         try {
             messageQueue.put(json);
+            messageQueue.put(json);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        globalRestart();
     }
 }

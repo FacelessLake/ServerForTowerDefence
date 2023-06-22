@@ -69,10 +69,6 @@ public class LevelMapState {
         return mapArr[gridX][gridY];
     }
 
-    private Vector2 gridXYtoPosition(int gridX, int gridY) {
-        return Vector2.Zero;
-    }
-
     private List<Tile> findNeighbors(int x, int y) {
         List<Tile> neighborTiles = new LinkedList<>();
         if (y + 1 < mapArr[0].length) {

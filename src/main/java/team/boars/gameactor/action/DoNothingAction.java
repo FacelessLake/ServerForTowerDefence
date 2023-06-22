@@ -7,7 +7,6 @@ import java.util.Map;
 public class DoNothingAction implements Action {
     private float rate;
     private final float range;
-    private final static String[] argList = new String[]{};
 
     public DoNothingAction(float rate, float range, Map<String, Float> params) {
         this.rate = rate;

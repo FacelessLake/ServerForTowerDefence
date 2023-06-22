@@ -20,7 +20,6 @@ public class Building implements GameActor, Pool.Poolable {
     private final Vector2 position;
     private final String name;
     private final Action action;
-    private final int demolitionCurrency;
     private boolean isActive;
     private float actionTimer;
     private GameActor target;
@@ -39,7 +38,6 @@ public class Building implements GameActor, Pool.Poolable {
         this.priority = config.priority;
         this.name = config.name;
         this.action = action;
-        this.demolitionCurrency = config.demolitionCurrency;
         this.position = new Vector2(position);
         isActive = true;
         actionTimer = action.getRate();
@@ -128,10 +126,6 @@ public class Building implements GameActor, Pool.Poolable {
         this.health = maxHealth;
     }
 
-    public int getDemolitionCurrency() {
-        return demolitionCurrency;
-    }
-
     @Override
     public void act(float delta) {
         if (buildTimer > 0) {
@@ -156,10 +150,6 @@ public class Building implements GameActor, Pool.Poolable {
         }
     }
 
-    public boolean isConstructed() {
-        return (buildTimer <= 0);
-    }
-
     @Override
     public void kill() {
         isActive = false;
@@ -178,10 +168,6 @@ public class Building implements GameActor, Pool.Poolable {
     @Override
     public void setTarget(GameActor target) {
         this.target = target;
-    }
-
-    public void setBuildTime(float time) {
-        buildTimer = time;
     }
 
     @Override

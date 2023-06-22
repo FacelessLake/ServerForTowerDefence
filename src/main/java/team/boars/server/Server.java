@@ -1,6 +1,7 @@
 package team.boars.server;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import team.boars.events.ActorDeathEvent;
 import team.boars.events.AlterCurrencyEvent;
 import team.boars.events.ConstructBuildingEvent;
@@ -13,6 +14,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static team.boars.server.Main.*;
 
@@ -21,6 +23,7 @@ public class Server {
     private static final ConcurrentHashMap<Integer, OneClientSocket> clients = new ConcurrentHashMap<>(); // список всех нитей
     private ClientHandler clientHandler;
     private static long last_time;
+    private static final AtomicInteger restartCounter = new AtomicInteger(0);
 
     public void start(int port) throws IOException {
         InetAddress addr = InetAddress.getByName("10.244.176.152");
@@ -29,11 +32,15 @@ public class Server {
         clientHandler.start();
 
         while (true) {
-            if (clients.size() > 0) {
+            if (clients.size() > 1) {
                 long time = System.currentTimeMillis();
                 float delta = (float) (time - last_time) / 1000f;
                 globalUpdate(delta);
                 last_time = time;
+            }
+            if(restartCounter.get() >= 2){
+                restartCounter.set(0);
+                globalRestart();
             }
         }
     }
@@ -62,7 +69,7 @@ public class Server {
                     Socket clientSocket = serverSocket.accept();
                     id++;
                     last_time = System.currentTimeMillis();
-                    clients.put(id, new OneClientSocket(clientSocket));
+                    clients.put(id, new OneClientSocket(clientSocket, id));
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -84,9 +91,11 @@ public class Server {
         private final AtomicBoolean running;
         private final WriteMsg writerThread;
         private final ReadMsg readerThread;
+        private final int id;
 
-        public OneClientSocket(Socket socket) throws IOException {
+        public OneClientSocket(Socket socket, Integer id) throws IOException {
             clientSocket = socket;
+            this.id = id;
             out = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8));
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
             writerThread = new WriteMsg();
@@ -97,14 +106,22 @@ public class Server {
 
         @Override
         public void run() {
-            if (clients.size() > 0) {
                 writerThread.start();
                 readerThread.start();
                 running.set(true);
+                JsonObject json = new JsonObject();
+                json.addProperty("cmd", "login");
+                json.addProperty("id", id);
+            try {
+                messageQueue.put(json);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+//            if (clients.size() > 1) {
                 while (running.get()) {
 
                 }
-            }
+//            }
         }
 
         public void stopSocket() {
@@ -136,9 +153,9 @@ public class Server {
                                 case "constructBuilding" ->
                                         eventQueue.addStateEvent(new ConstructBuildingEvent(command.getId(), command.getGridX(), command.getGridY()));
                                 case "demolishBuilding" -> {
-                                    eventQueue.addStateEvent(new ActorDeathEvent(command.getRefID(), false));
                                     int id = controller.getLevelState().getBuildings().get(command.getRefID()).getID();
                                     int demolitionReturn = creator.getBuildingConfig(id).demolitionCurrency;
+                                    eventQueue.addStateEvent(new ActorDeathEvent(command.getRefID(), false));
                                     eventQueue.addStateEvent(new AlterCurrencyEvent(demolitionReturn));
                                 }
                                 case "upgradeBuilding" ->
@@ -146,6 +163,7 @@ public class Server {
                             }
                         }
                     } catch (IOException e) {
+//                        System.out.println("Player left!");
                         throw new RuntimeException(e);
                     }
                 }
@@ -159,14 +177,17 @@ public class Server {
         // нить отправляющая сообщения приходящие с консоли на сервер
         public class WriteMsg extends Thread {
             private final AtomicBoolean running = new AtomicBoolean(false);
-
             @Override
             public void run() {
                 running.set(true);
                 try {
                     while (running.get()) {
                         if (!messageQueue.isEmpty()) {
-                            this.send(Main.messageQueue.take().toString());
+                            JsonObject json = messageQueue.take();
+                            this.send(json.toString());
+                            if (json.get("cmd").getAsString().equals("endGame")) {
+                                restartCounter.incrementAndGet();
+                            }
                         }
                     }
                 } catch (InterruptedException e) {

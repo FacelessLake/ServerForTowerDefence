@@ -133,5 +133,140 @@
         "Background"
       ]
     ]
+  },
+  {
+    "id": 1,
+    "width": 10,
+    "height": 10,
+    "baseCoordinates": {
+      "x": 8.0,
+      "y": 4.0
+    },
+    "spawnerCoordinates": {
+      "x": 0.0,
+      "y": 2.0
+    },
+    "field": [
+      [
+        "Background",
+        "Background",
+        "Road",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background"
+      ],
+      [
+        "Background",
+        "Background",
+        "Road",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background"
+      ],
+      [
+        "Background",
+        "Plot",
+        "Road",
+        "Background",
+        "Background",
+        "ClaimedPlot",
+        "Background",
+        "Background",
+        "Background",
+        "Background"
+      ],
+      [
+        "Background",
+        "Road",
+        "Road",
+        "Road",
+        "Road",
+        "Road",
+        "Background",
+        "Background",
+        "Background",
+        "Background"
+      ],
+      [
+        "Background",
+        "Road",
+        "Background",
+        "Background",
+        "Background",
+        "Road",
+        "Background",
+        "Background",
+        "Background",
+        "Background"
+      ],
+      [
+        "Background",
+        "Road",
+        "Plot",
+        "Background",
+        "Road",
+        "Road",
+        "ClaimedPlot",
+        "Background",
+        "Background",
+        "Background"
+      ],
+      [
+        "Background",
+        "Road",
+        "Road",
+        "Road",
+        "Road",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background"
+      ],
+      [
+        "Background",
+        "Background",
+        "Background",
+        "Plot",
+        "Road",
+        "ClaimedPlot",
+        "Background",
+        "Background",
+        "Background",
+        "Background"
+      ],
+      [
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "ClaimedPlot",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background"
+      ],
+      [
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background",
+        "Background"
+      ]
+    ]
   }
 ]

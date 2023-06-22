@@ -1,11 +1,12 @@
 package team.boars.sprite;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import team.boars.events.DamageActorEvent;
 import team.boars.framework.LevelView;
 import team.boars.gameactor.GameActor;
 
+import static team.boars.framework.LevelView.WORLD_SIZE_X;
+import static team.boars.framework.LevelView.WORLD_SIZE_Y;
 import static team.boars.server.Main.eventQueue;
 
 public class Projectile {
@@ -29,17 +30,20 @@ public class Projectile {
             width = LevelView.TilE_SIZE * 0.8;
             height = LevelView.TilE_SIZE * 0.8;
         } else {
-            width = LevelView.TilE_SIZE * 0.5;
-            height = LevelView.TilE_SIZE * 0.5;
+            width = LevelView.TilE_SIZE * 0.95;
+            height = LevelView.TilE_SIZE * 0.95;
         }
         this.targetRefID = target.getRefID();
         this.targetsEnemy = targetsEnemy;
     }
 
     public void act(float delta) {
-        if (active){
+        if (active) {
             if (collidesWithTarget()) {
                 eventQueue.addStateEvent(new DamageActorEvent(damage, targetRefID, targetsEnemy));
+                active = false;
+            }
+            if (isOutOfBounds()) {
                 active = false;
             }
             Vector2 targetPos = new Vector2(target.getPosition().x, target.getPosition().y);
@@ -52,10 +56,15 @@ public class Projectile {
     }
 
     private boolean collidesWithTarget() {
+        if (target == null) return false;
         boolean a = (x >= target.getPosition().x - width / 2);
         boolean c = (y >= target.getPosition().y - height / 2);
         boolean b = (x <= target.getPosition().x + width / 2);
         boolean d = (y <= target.getPosition().y + height / 2);
         return a && b && c && d;
+    }
+
+    private boolean isOutOfBounds() {
+        return x > WORLD_SIZE_X || x < 0 || y > WORLD_SIZE_Y || y < 0;
     }
 }
