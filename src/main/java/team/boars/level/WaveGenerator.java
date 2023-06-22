@@ -10,7 +10,6 @@ import java.util.Queue;
 import java.util.Random;
 
 import static team.boars.server.Main.eventQueue;
-import static team.boars.server.Main.messageQueue;
 
 public class WaveGenerator {
     private final Queue<WaveConfig> waves;

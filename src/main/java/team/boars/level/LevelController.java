@@ -28,9 +28,11 @@ public class LevelController {
     private final List<Projectile> deadProjectiles;
     private float actorStateTimer;
     private boolean isActive;
+    private final int reward;
 
     public LevelController(Creator creator, int levelID) {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
+        reward = levelConfig.reward;
         levelState = new LevelState(creator, levelConfig);
         Vector2 basePosition = levelConfig.baseTileCoords;
         eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y, 0));
@@ -46,7 +48,7 @@ public class LevelController {
     public void update(float delta) {
         if (!isActive) return;
         if (levelState.isLastEnemySpawned() && levelState.getEnemies().size() == 0) {
-            eventQueue.addStateEvent(new LevelEndEvent(true, 200));
+            eventQueue.addStateEvent(new LevelEndEvent(true, reward));
             isActive = false;
         }
 

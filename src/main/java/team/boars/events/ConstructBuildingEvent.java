@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import team.boars.gameactor.Building;
 import team.boars.level.Tile;
 
+import static team.boars.server.Main.eventQueue;
 import static team.boars.server.Main.messageQueue;
 
 public class ConstructBuildingEvent implements StateEvent {
@@ -30,6 +31,7 @@ public class ConstructBuildingEvent implements StateEvent {
         Building newBuilding = state.getCreator().getNewBuilding(buildingID);
         Tile targetTile = state.getMap().mapArr[tileX][tileY];
         newBuilding.setPosition(targetTile.x, targetTile.y);
+        eventQueue.addStateEvent(new AlterCurrencyEvent(-cost));
 
         if (refID == -1) {
             int refID = MathUtils.random(10000);

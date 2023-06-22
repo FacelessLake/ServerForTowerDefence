@@ -18,8 +18,9 @@ import static team.boars.server.Main.*;
 
 public class Server {
     private ServerSocket serverSocket;
-    public static ConcurrentHashMap<Integer, OneClientSocket> clients = new ConcurrentHashMap<>(); // список всех нитей
-    ClientHandler clientHandler;
+    private static final ConcurrentHashMap<Integer, OneClientSocket> clients = new ConcurrentHashMap<>(); // список всех нитей
+    private ClientHandler clientHandler;
+    private static long last_time;
 
     public void start(int port) throws IOException {
         InetAddress addr = InetAddress.getByName("10.244.176.152");
@@ -27,7 +28,6 @@ public class Server {
         clientHandler = new ClientHandler(serverSocket);
         clientHandler.start();
 
-        long last_time = System.currentTimeMillis();
         while (true) {
             if (clients.size() > 0) {
                 long time = System.currentTimeMillis();
@@ -61,6 +61,7 @@ public class Server {
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
                     id++;
+                    last_time = System.currentTimeMillis();
                     clients.put(id, new OneClientSocket(clientSocket));
                 }
             } catch (IOException e) {
@@ -132,21 +133,16 @@ public class Server {
                         if (line != null) {
                             CommandObject command = gson.fromJson(line, CommandObject.class);
                             switch (command.getCmd()) {
-                                case "constructBuilding": {
-                                    eventQueue.addStateEvent(new ConstructBuildingEvent(command.getId(), command.getGridX(), command.getGridY()));
-                                    break;
-                                }
-                                case "demolishBuilding": {
+                                case "constructBuilding" ->
+                                        eventQueue.addStateEvent(new ConstructBuildingEvent(command.getId(), command.getGridX(), command.getGridY()));
+                                case "demolishBuilding" -> {
                                     eventQueue.addStateEvent(new ActorDeathEvent(command.getRefID(), false));
                                     int id = controller.getLevelState().getBuildings().get(command.getRefID()).getID();
                                     int demolitionReturn = creator.getBuildingConfig(id).demolitionCurrency;
                                     eventQueue.addStateEvent(new AlterCurrencyEvent(demolitionReturn));
-                                    break;
                                 }
-                                case "upgradeBuilding": {
-                                    eventQueue.addStateEvent(new UpgradeBuildingEvent(command.getRefID(), command.getUpgradeId()));
-                                    break;
-                                }
+                                case "upgradeBuilding" ->
+                                        eventQueue.addStateEvent(new UpgradeBuildingEvent(command.getRefID(), command.getUpgradeId()));
                             }
                         }
                     } catch (IOException e) {

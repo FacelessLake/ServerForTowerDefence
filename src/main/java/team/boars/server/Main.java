@@ -11,17 +11,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Main {
     public static EventQueue eventQueue = new EventQueue();
     public static Creator creator = new Creator();
-    public static LevelController controller = new LevelController(creator, 0);;
-    public static LinkedBlockingQueue<JsonObject> messageQueue = new LinkedBlockingQueue<>();;
+    public static LevelController controller = new LevelController(creator, 0);
+    public static LinkedBlockingQueue<JsonObject> messageQueue = new LinkedBlockingQueue<>();
     public static Server server = new Server();
-//    private static float timer = 0.5f;
 
     public static void globalUpdate(float delta) {
-//        timer -= delta;
-//        if(timer<=0){
-//            System.out.println(messageQueue.toString());
-//            timer = 0.5f;
-//        }
         controller.update(delta);
         eventQueue.update();
     }

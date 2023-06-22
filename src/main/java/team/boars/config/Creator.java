@@ -3,7 +3,6 @@ package team.boars.config;
 import team.boars.config.config_classes.BuildingConfig;
 import team.boars.config.config_classes.EnemyConfig;
 import team.boars.config.config_classes.LevelConfig;
-import team.boars.config.config_classes.TechTreeConfig;
 import team.boars.gameactor.action.*;
 import team.boars.gameactor.Building;
 import team.boars.gameactor.Enemy;
@@ -20,7 +19,6 @@ public class Creator {
     private final Map<Integer, EnemyConfig> enemyConfigMap;
     private final Map<Integer, LevelConfig> levelConfigMap;
     private final Map<ActionType, Class<?>> actionClasses;
-    private final TechTreeConfig techTree;
 
     public Creator() {
         deserializer = new Deserializer("assets/configs/");
@@ -32,7 +30,6 @@ public class Creator {
         initBuildings();
         initEnemies();
         initLevels();
-        techTree = deserializer.deserializeTechTree();
     }
 
     public Building getNewBuilding(int ID) {
@@ -70,22 +67,6 @@ public class Creator {
 
     public LevelConfig getLevelConfig(int ID) {
         return levelConfigMap.get(ID);
-    }
-
-    public Map<Integer, BuildingConfig> getBuildingMap() {
-        return buildingConfigMap;
-    }
-
-    public Map<Integer, EnemyConfig> getEnemyConfigMap() {
-        return enemyConfigMap;
-    }
-
-    public Map<Integer, LevelConfig> getLevelConfigMap() {
-        return levelConfigMap;
-    }
-
-    public TechTreeConfig getTechTree() {
-        return techTree;
     }
 
     private void initActions() {

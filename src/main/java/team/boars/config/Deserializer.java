@@ -114,16 +114,4 @@ public class Deserializer {
         }
         return levelsMap;
     }
-
-    public TechTreeConfig deserializeTechTree() {
-        Reader reader;
-        try {
-            reader = new FileReader(path.concat(fileNames.get("TechTree")));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        Type type = new TypeToken<TechTreeConfig>() {
-        }.getType();
-        return gson.fromJson(reader, type);
-    }
 }
