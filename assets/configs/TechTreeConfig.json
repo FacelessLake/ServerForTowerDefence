@@ -1,0 +1,67 @@
+{
+  "rootNodes": {
+    "-1": [
+      {
+        "id": 0,
+        "cost": 100,
+        "upgrades": [
+          {
+            "upgradedParameter": "value",
+            "modifier": 2.0
+          }
+        ],
+        "parentIds": []
+      },
+      {
+        "id": 1,
+        "cost": 100,
+        "upgrades": [
+          {
+            "upgradedParameter": "actionRate",
+            "modifier": 0.5
+          }
+        ],
+        "parentIds": []
+      }
+    ],
+    "1": [
+      {
+        "id": 2,
+        "cost": 100,
+        "upgrades": [
+          {
+            "upgradedParameter": "actionRate",
+            "modifier": 0.5
+          }
+        ],
+        "parentIds": []
+      },
+      {
+        "id": 3,
+        "cost": 100,
+        "upgrades": [
+          {
+            "upgradedParameter": "damage",
+            "modifier": 3.0
+          }
+        ],
+        "parentIds": [
+          2
+        ]
+      }
+    ],
+    "2": [
+      {
+        "id": 4,
+        "cost": 100,
+        "upgrades": [
+          {
+            "upgradedParameter": "value",
+            "modifier": 2.0
+          }
+        ],
+        "parentIds": []
+      }
+    ]
+  }
+}

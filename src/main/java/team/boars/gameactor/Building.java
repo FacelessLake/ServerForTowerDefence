@@ -2,7 +2,7 @@ package team.boars.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
-import team.boars.config.BuildingConfig;
+import team.boars.config.config_classes.BuildingConfig;
 import team.boars.gameactor.action.Action;
 import team.boars.gameactor.priority.Priority;
 

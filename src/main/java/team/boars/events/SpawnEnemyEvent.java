@@ -29,7 +29,7 @@ public class SpawnEnemyEvent implements StateEvent{
         json.addProperty("refID", refID);
         json.addProperty("id", enemyID);
         json.addProperty("gridX", gridX);
-        json.addProperty("gridX", gridY);
+        json.addProperty("gridY", gridY);
         newEnemy.setRefID(refID);
         state.getEnemies().put(refID, newEnemy);
         try {

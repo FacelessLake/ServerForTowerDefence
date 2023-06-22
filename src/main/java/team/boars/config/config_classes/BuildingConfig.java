@@ -1,20 +1,22 @@
-package team.boars.config;
+package team.boars.config.config_classes;
 
 import team.boars.gameactor.action.ActionType;
 import team.boars.gameactor.priority.Priority;
 
+import java.util.List;
 import java.util.Map;
 
-public class EnemyConfig {
+public class BuildingConfig {
     public int id;
     public int maxHealth;
-    public int reward;
     public Priority priority;
-    public float speed;
+    public int cost;
     public String name;
-    public String SpriteName;
+    public String spriteName;
+    public int demolitionCurrency;
+    public List<BuildingUpgradeConfig> upgrades;
     public float actionRate;
-    public float actionRange;
     public ActionType actionType;
+    public float actionRange;
     public Map<String, Float> actionParams;
 }

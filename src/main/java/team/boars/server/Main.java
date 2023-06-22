@@ -26,6 +26,14 @@ public class Main {
         eventQueue.update();
     }
 
+    public static void globalRestart(){
+        eventQueue = new EventQueue();
+        creator = new Creator();
+        controller = new LevelController(creator, 0);
+        messageQueue.clear();
+        server.restart();
+    }
+
     public static void main(String[] args) {
         eventQueue.subscribeState(controller.getLevelState());
         try {

@@ -4,9 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import team.boars.config.Creator;
-import team.boars.config.LevelConfig;
+import team.boars.config.config_classes.LevelConfig;
 import team.boars.events.ActorDeathEvent;
 import team.boars.events.ConstructBuildingEvent;
+import team.boars.events.LevelEndEvent;
 import team.boars.events.StateHolder;
 import team.boars.gameactor.Building;
 import team.boars.gameactor.Enemy;
@@ -26,6 +27,7 @@ public class LevelController {
     private List<Projectile> projectiles = new ArrayList<>();
     private List<Projectile> deadProjectiles = new ArrayList<>();
     private float actorStateTimer = 0.3f;
+    private boolean isActive = true;
 
     public LevelController(Creator creator, int levelID) {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
@@ -38,8 +40,13 @@ public class LevelController {
     }
 
     public void update(float delta) {
-        waveGenerator.update(delta);
+        if (!isActive) return;
+        if (levelState.isLastEnemySpawned() && levelState.getEnemies().size() == 0) {
+            eventQueue.addStateEvent(new LevelEndEvent(true, 200));
+            isActive = false;
+        }
 
+        waveGenerator.update(delta);
         for (int key : levelState.getBuildings().keySet()) {
             updateActor(levelState.getBuildings().get(key), key, delta, false);
         }

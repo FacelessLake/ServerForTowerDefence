@@ -1,13 +1,16 @@
 package team.boars.level;
 
-import team.boars.config.LevelConfig;
-import team.boars.config.WaveConfig;
-//import com.mygdx.towerdefence.events.SpawnEnemyEvent;
-//import com.mygdx.towerdefence.framework.screens.LevelScreen;
+import team.boars.config.config_classes.LevelConfig;
+import team.boars.config.config_classes.WaveConfig;
+import team.boars.events.LastEnemySpawnEvent;
+import team.boars.events.SpawnEnemyEvent;
 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+
+import static team.boars.server.Main.eventQueue;
+import static team.boars.server.Main.messageQueue;
 
 public class WaveGenerator {
     private final Queue<WaveConfig> waves;
@@ -50,13 +53,14 @@ public class WaveGenerator {
         if (enemyTimer <= 0 && isWaveActive) {
             int index = random.nextInt(activeWave.enemyTypes.size());
             int enemyID = activeWave.enemyTypes.get(index);
-//            LevelScreen.eventQueue.addStateEvent(new SpawnEnemyEvent(enemyID, spawnerGridX, spawnerGridY));
+            eventQueue.addStateEvent(new SpawnEnemyEvent(enemyID, spawnerGridX, spawnerGridY));
 
             enemiesDepleted++;
             if (enemiesDepleted >= activeWave.enemyCount) {
                 isWaveActive = false;
                 if (waves.isEmpty()) {
                     isActive = false;
+                    eventQueue.addStateEvent(new LastEnemySpawnEvent());
                     return;
                 }
                 activeWave = waves.remove();

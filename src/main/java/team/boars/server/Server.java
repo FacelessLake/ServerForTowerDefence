@@ -11,91 +11,121 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static team.boars.server.Main.*;
 
 public class Server {
     private ServerSocket serverSocket;
-    public static ConcurrentHashMap<Integer, OneClientSocket> serverList = new ConcurrentHashMap<>(); // список всех нитей
+    public static ConcurrentHashMap<Integer, OneClientSocket> clients = new ConcurrentHashMap<>(); // список всех нитей
+    ClientHandler clientHandler;
 
     public void start(int port) throws IOException {
         InetAddress addr = InetAddress.getByName("10.244.176.152");
         serverSocket = new ServerSocket(port, 50, addr);
-        new ClientHandler(serverSocket).start();
+        clientHandler = new ClientHandler(serverSocket);
+        clientHandler.start();
 
         long last_time = System.currentTimeMillis();
         while (true) {
-            if (serverList.size() > 0) {
+            if (clients.size() > 0) {
                 long time = System.currentTimeMillis();
                 float delta = (float) (time - last_time) / 1000f;
                 globalUpdate(delta);
                 last_time = time;
             }
         }
-
     }
 
     public void stop() throws IOException {
         serverSocket.close();
     }
 
+    public void restart() {
+        clientHandler.restart();
+    }
+
     private static class ClientHandler extends Thread {
         ServerSocket serverSocket;
+        int id;
 
         ClientHandler(ServerSocket serverSocket) {
             this.serverSocket = serverSocket;
+            id = 0;
         }
 
         @Override
         public void run() {
-            int id = 0;
             try {
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
-                    serverList.put(id, new OneClientSocket(clientSocket));
                     id++;
+                    clients.put(id, new OneClientSocket(clientSocket));
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+
+        public void restart() {
+            for (int i = id; i > 0; i--) {
+                clients.remove(i).stopSocket();
+            }
+            id = 0;
+        }
     }
 
     private static class OneClientSocket extends Thread {
         private final Socket clientSocket;
-        private PrintWriter out;
-        private BufferedReader in;
-//        private JsonObject json;
+        private final PrintWriter out;
+        private final BufferedReader in;
+        private final AtomicBoolean running;
+        private final WriteMsg writerThread;
+        private final ReadMsg readerThread;
 
         public OneClientSocket(Socket socket) throws IOException {
-            this.clientSocket = socket;
+            clientSocket = socket;
             out = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8));
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
-//            json = new JsonObject();
-//            json.addProperty("cmd", "login");
-//            json.addProperty("mem", "memelord");
-//            System.out.println(json);
+            writerThread = new WriteMsg();
+            readerThread = new ReadMsg();
+            running = new AtomicBoolean(false);
             this.start();
         }
 
         @Override
         public void run() {
-            if (serverList.size() > 0) {
-                new WriteMsg().start();
-                new ReadMsg().start();
-            }
+            if (clients.size() > 0) {
+                writerThread.start();
+                readerThread.start();
+                running.set(true);
+                while (running.get()) {
 
-//                in.close();
-//                out.close();
-//                clientSocket.close();
+                }
+            }
+        }
+
+        public void stopSocket() {
+            writerThread.stopWriting();
+            readerThread.stopReading();
+            try {
+                in.close();
+                out.close();
+                clientSocket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            running.set(false);
         }
 
         private class ReadMsg extends Thread {
             Gson gson = new Gson();
+            private final AtomicBoolean running = new AtomicBoolean(false);
 
             @Override
             public void run() {
-                while (true) {
+                running.set(true);
+                while (running.get()) {
                     try {
                         String line = in.readLine();
                         if (line != null) {
@@ -122,14 +152,21 @@ public class Server {
                     }
                 }
             }
+
+            public void stopReading() {
+                running.set(false);
+            }
         }
 
         // нить отправляющая сообщения приходящие с консоли на сервер
         public class WriteMsg extends Thread {
+            private final AtomicBoolean running = new AtomicBoolean(false);
+
             @Override
             public void run() {
+                running.set(true);
                 try {
-                    while (true) {
+                    while (running.get()) {
                         if (!messageQueue.isEmpty()) {
                             this.send(Main.messageQueue.take().toString());
                         }
@@ -142,6 +179,10 @@ public class Server {
             private void send(String msg) {
                 out.write(msg + "\n");
                 out.flush();
+            }
+
+            public void stopWriting() {
+                running.set(false);
             }
         }
 

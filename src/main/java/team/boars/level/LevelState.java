@@ -1,12 +1,13 @@
 package team.boars.level;
 
 import team.boars.config.Creator;
-import team.boars.config.LevelConfig;
+import team.boars.config.config_classes.LevelConfig;
 import team.boars.events.StateHolder;
 import team.boars.gameactor.GameActor;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import static team.boars.framework.LevelView.*;
 
 public class LevelState implements StateHolder {
@@ -15,6 +16,7 @@ public class LevelState implements StateHolder {
     private final LevelMapState tileMap;
     private int inLevelCurrency;
     private final Creator creator;
+    private boolean lastEnemySpawn;
 
     public final float mapCornerX;
     public final float mapCornerY;
@@ -27,6 +29,7 @@ public class LevelState implements StateHolder {
         mapCornerX = (WORLD_SIZE_X - (config.tileMap.length * TilE_SIZE)) / 2;
         mapCornerY = (WORLD_SIZE_Y - (config.tileMap[0].length * TilE_SIZE)) / 2;
         this.creator = creator;
+        lastEnemySpawn = false;
     }
 
     @Override
@@ -57,5 +60,15 @@ public class LevelState implements StateHolder {
     @Override
     public Creator getCreator() {
         return creator;
+    }
+
+    @Override
+    public void markLastEnemySpawn() {
+        lastEnemySpawn = true;
+    }
+
+    @Override
+    public boolean isLastEnemySpawned() {
+        return lastEnemySpawn;
     }
 }

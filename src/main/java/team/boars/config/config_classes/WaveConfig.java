@@ -1,4 +1,4 @@
-package team.boars.config;
+package team.boars.config.config_classes;
 
 import java.util.List;
 

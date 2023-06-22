@@ -13,4 +13,6 @@ public interface StateHolder {
     int getCurrency();
     void addCurrency(int currency);
     Creator getCreator();
+    void markLastEnemySpawn();
+    boolean isLastEnemySpawned();
 }

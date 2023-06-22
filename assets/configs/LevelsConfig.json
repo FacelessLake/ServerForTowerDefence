@@ -1,0 +1,42 @@
+[
+  {
+    "id": 0,
+    "startingCurrency": 20,
+    "reward": 1000,
+    "backgroundTextureName": "background.png",
+    "plotTextureName": "plot.png",
+    "roadTextureName": "road.png",
+    "waves": [
+      {
+        "waveDelay": 20,
+        "enemyCount": 1,
+        "enemyInterval": 4,
+        "enemyTypes": [
+          0,
+          1
+        ]
+      }
+    ],
+    "mapID": 0
+  },
+  {
+    "id": 1,
+    "startingCurrency": 40,
+    "reward": 1000,
+    "backgroundTextureName": "background.png",
+    "plotTextureName": "road.png",
+    "roadTextureName": "plot.png",
+    "waves": [
+      {
+        "waveDelay": 20,
+        "enemyCount": 2,
+        "enemyInterval": 4,
+        "enemyTypes": [
+          1,
+          0
+        ]
+      }
+    ],
+    "mapID": 0
+  }
+]

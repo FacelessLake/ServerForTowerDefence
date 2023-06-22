@@ -1,4 +1,4 @@
-package team.boars.config;
+package team.boars.config.config_classes;
 
 import com.badlogic.gdx.math.Vector2;
 import team.boars.framework.TileType;
@@ -12,7 +12,9 @@ public class LevelConfig {
     public String roadTextureName;
     public List<WaveConfig> waves;
     public int startingCurrency;
+    public int mapID;
     public TileType[][] tileMap;
     public Vector2 baseTileCoords;
     public Vector2 spawnerCoords;
+    public int reward;
 }

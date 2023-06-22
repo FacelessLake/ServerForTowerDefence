@@ -2,7 +2,7 @@ package team.boars.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
 import team.boars.gameactor.action.Action;
-import team.boars.config.EnemyConfig;
+import team.boars.config.config_classes.EnemyConfig;
 import team.boars.gameactor.priority.Priority;
 
 public class Enemy implements GameActor {

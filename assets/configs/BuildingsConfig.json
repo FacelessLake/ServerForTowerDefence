@@ -1,0 +1,82 @@
+[
+  {
+    "id": 0,
+    "name": "Base",
+    "maxHealth": 100,
+    "cost": 0,
+    "spriteName": "base.png",
+    "demolitionCurrency": 0,
+    "actionType": "DoNothing",
+    "actionRate": -1,
+    "actionRange": 0,
+    "actionParams": {}
+  },
+  {
+    "name": "Guard Tower",
+    "id": 1,
+    "maxHealth": 40,
+    "cost": 50,
+    "spriteName": "tower.png",
+    "demolitionCurrency": 15,
+    "actionType": "BasicAttack",
+    "actionRate": 1,
+    "actionRange": 120,
+    "actionParams": {
+      "damage": 5.0
+    },
+    "upgrades": [
+      {
+        "cost": 10,
+        "upgrades": [
+          {
+            "upgradedParameter": "actionRate",
+            "modifier": 0.5
+          }
+        ]
+      },
+      {
+        "cost": 15,
+        "upgrades": [
+          {
+            "upgradedParameter": "actionRate",
+            "modifier": 0.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Gold Mine",
+    "id": 2,
+    "maxHealth": 40,
+    "cost": 10,
+    "spriteName": "mine.png",
+    "demolitionCurrency": 5,
+    "actionType": "GenerateCurrency",
+    "actionRate": 1,
+    "actionRange": 0,
+    "actionParams": {
+      "value": 5.0
+    },
+    "upgrades": [
+      {
+        "cost": 10,
+        "upgrades": [
+          {
+            "upgradedParameter": "actionRate",
+            "modifier": 0.5
+          }
+        ]
+      },
+      {
+        "cost": 15,
+        "upgrades": [
+          {
+            "upgradedParameter": "value",
+            "modifier": 2
+          }
+        ]
+      }
+    ]
+  }
+]
