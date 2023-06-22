@@ -17,6 +17,7 @@ public class UpgradeBuildingEvent implements StateEvent {
     @Override
     public void execute(StateHolder state) {
         Building building = (Building) state.getBuildings().get(refID);
+        if (building == null) return;
         BuildingConfig config = state.getCreator().getBuildingConfig(building.getID());
         BuildingUpgradeConfig upgrade = config.upgrades.get(upgradeID);
         if (upgrade.cost > state.getCurrency()) return;

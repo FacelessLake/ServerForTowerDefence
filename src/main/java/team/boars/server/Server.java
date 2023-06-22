@@ -24,6 +24,7 @@ public class Server {
     private ClientHandler clientHandler;
     private static long last_time;
     private static final AtomicInteger restartCounter = new AtomicInteger(0);
+    private static final AtomicBoolean queueFirstTakeFlag = new AtomicBoolean(true);
 
     public void start(int port) throws IOException {
         InetAddress addr = InetAddress.getByName("10.244.176.152");
@@ -183,10 +184,20 @@ public class Server {
                 try {
                     while (running.get()) {
                         if (!messageQueue.isEmpty()) {
-                            JsonObject json = messageQueue.take();
-                            this.send(json.toString());
-                            if (json.get("cmd").getAsString().equals("endGame")) {
-                                restartCounter.incrementAndGet();
+                            JsonObject json;
+                            if (queueFirstTakeFlag.get()){
+                                json = messageQueue.peek();
+                                queueFirstTakeFlag.set(false);
+                            }
+                            else {
+                                json = messageQueue.take();
+                                queueFirstTakeFlag.set(true);
+                            }
+                            if (json != null) {
+                                this.send(json.toString());
+                                if (json.get("cmd").getAsString().equals("endGame")) {
+                                    restartCounter.incrementAndGet();
+                                }
                             }
                         }
                     }

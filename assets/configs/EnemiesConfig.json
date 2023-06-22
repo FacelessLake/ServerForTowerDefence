@@ -2,7 +2,7 @@
   {
     "id": 0,
     "name": "Boar Warrior",
-    "maxHealth": 15,
+    "maxHealth": 30,
     "reward": 5,
     "spriteName": "boar.png",
     "speed": 100,
@@ -16,15 +16,29 @@
   {
     "id": 1,
     "name": "Boar Ranger",
-    "maxHealth": 10,
+    "maxHealth": 20,
     "reward": 5,
     "spriteName": "boarRanger.png",
     "speed": 150,
     "actionType": "BasicAttack",
     "actionRate": 1.5,
-    "actionRange": 100,
+    "actionRange": 150,
     "actionParams": {
       "damage": 3.0
+    }
+  },
+  {
+    "id": 2,
+    "name": "Boar God",
+    "maxHealth": 200,
+    "reward": 200,
+    "spriteName": "boarGod.png",
+    "speed": 70,
+    "actionType": "BasicAttack",
+    "actionRate": 2,
+    "actionRange": 45,
+    "actionParams": {
+      "damage": 99
     }
   }
 ]

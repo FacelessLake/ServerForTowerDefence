@@ -25,8 +25,8 @@
     "startingCurrency": 40,
     "reward": 1000,
     "backgroundTextureName": "background.png",
-    "plotTextureName": "road.png",
-    "roadTextureName": "plot.png",
+    "plotTextureName": "plot.png",
+    "roadTextureName": "road.png",
     "claimedPlotTextureName": "claimedPlot.png",
     "waves": [
       {
@@ -46,17 +46,25 @@
     "startingCurrency": 40,
     "reward": 1000,
     "backgroundTextureName": "background.png",
-    "plotTextureName": "road.png",
-    "roadTextureName": "plot.png",
+    "plotTextureName": "plot.png",
+    "roadTextureName": "road.png",
     "claimedPlotTextureName": "claimedPlot.png",
     "waves": [
       {
-        "waveDelay": 20,
+        "waveDelay": 15,
         "enemyCount": 5,
         "enemyInterval": 4,
         "enemyTypes": [
           1,
           0
+        ]
+      },
+      {
+        "waveDelay": 10,
+        "enemyCount": 1,
+        "enemyInterval": 1,
+        "enemyTypes": [
+          2
         ]
       }
     ],
