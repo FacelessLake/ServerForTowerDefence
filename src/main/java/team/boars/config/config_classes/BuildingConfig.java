@@ -12,7 +12,6 @@ public class BuildingConfig {
     public Priority priority;
     public int cost;
     public String name;
-    public String spriteName;
     public int demolitionCurrency;
     public List<BuildingUpgradeConfig> upgrades;
     public float actionRate;

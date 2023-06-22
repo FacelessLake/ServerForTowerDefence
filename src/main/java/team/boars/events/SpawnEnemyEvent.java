@@ -3,9 +3,10 @@ package team.boars.events;
 import com.badlogic.gdx.math.MathUtils;
 import com.google.gson.JsonObject;
 import team.boars.gameactor.Enemy;
+
 import static team.boars.server.Main.messageQueue;
 
-public class SpawnEnemyEvent implements StateEvent{
+public class SpawnEnemyEvent implements StateEvent {
     int enemyID, gridX, gridY;
 
     public SpawnEnemyEvent(int enemyID, int gridX, int gridY) {

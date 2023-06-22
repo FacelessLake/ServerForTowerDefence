@@ -4,5 +4,5 @@ import java.util.List;
 import java.util.Map;
 
 public class TechTreeConfig {
-   public Map<Integer, List<TechTreeNodeConfig>> rootNodes;
+    public Map<Integer, List<TechTreeNodeConfig>> rootNodes;
 }

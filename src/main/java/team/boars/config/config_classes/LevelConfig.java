@@ -7,9 +7,6 @@ import java.util.List;
 
 public class LevelConfig {
     public int id;
-    public String backgroundTextureName;
-    public String plotTextureName;
-    public String roadTextureName;
     public List<WaveConfig> waves;
     public int startingCurrency;
     public int mapID;

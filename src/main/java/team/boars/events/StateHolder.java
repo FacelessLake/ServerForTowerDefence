@@ -8,11 +8,18 @@ import java.util.Map;
 
 public interface StateHolder {
     Map<Integer, GameActor> getBuildings();
+
     Map<Integer, GameActor> getEnemies();
+
     LevelMapState getMap();
+
     int getCurrency();
+
     void addCurrency(int currency);
+
     Creator getCreator();
+
     void markLastEnemySpawn();
+
     boolean isLastEnemySpawned();
 }

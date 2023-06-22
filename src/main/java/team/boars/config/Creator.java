@@ -61,7 +61,8 @@ public class Creator {
         try {
             ctor = actionClass.getConstructor(float.class, float.class, Map.class);
             return (Action) ctor.newInstance(rate, range, params);
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                 IllegalAccessException e) {
             e.printStackTrace();
         }
         return null;

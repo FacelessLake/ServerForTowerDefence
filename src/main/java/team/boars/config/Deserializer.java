@@ -19,6 +19,7 @@ public class Deserializer {
     private final Gson gson;
     private final String path;
     private final Map<String, String> fileNames;
+
     public Deserializer(String path) {
         gson = new GsonBuilder().create();
         this.path = path;
@@ -71,7 +72,7 @@ public class Deserializer {
         return enemiesMap;
     }
 
-    private Map<Integer, MapConfig> deserializeMaps(){
+    private Map<Integer, MapConfig> deserializeMaps() {
         List<MapConfig> maps;
         Reader reader;
         try {
@@ -89,7 +90,7 @@ public class Deserializer {
         return mapMap;
     }
 
-    public Map<Integer, LevelConfig> deserializeLevels(){
+    public Map<Integer, LevelConfig> deserializeLevels() {
         Map<Integer, MapConfig> maps = this.deserializeMaps();
 
         List<LevelConfig> levels;

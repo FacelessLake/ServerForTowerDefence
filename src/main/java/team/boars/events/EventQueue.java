@@ -20,7 +20,9 @@ public class EventQueue {
         }
     }
 
-    public void addStateEvent(StateEvent event) { stateEvents.add(event); }
+    public void addStateEvent(StateEvent event) {
+        stateEvents.add(event);
+    }
 
     public void subscribeState(StateHolder state) {
         stateSubscribers.add(state);

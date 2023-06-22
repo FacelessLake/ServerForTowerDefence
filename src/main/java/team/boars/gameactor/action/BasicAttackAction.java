@@ -31,7 +31,7 @@ public class BasicAttackAction extends DoNothingAction {
         if (target.getPosition().dst(caller.getPosition()) <= range) {
             if (range <= LevelView.TilE_SIZE / 2) {
                 //melee
-                eventQueue.addStateEvent(new DamageActorEvent(target.getRefID(), damage, targetsEnemy));
+                eventQueue.addStateEvent(new DamageActorEvent(damage, target.getRefID(), targetsEnemy));
                 json.addProperty("cmd", "meleeAttack");
                 json.addProperty("attackerRefID", caller.getRefID());
                 json.addProperty("targetRefID", target.getRefID());

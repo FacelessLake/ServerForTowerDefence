@@ -12,7 +12,7 @@ import static team.boars.server.Main.messageQueue;
 
 public class GenerateCurrencyAction extends DoNothingAction {
     private final static String[] argList = new String[]{"value"};
-    private final int value;
+    private int value;
 
     public GenerateCurrencyAction(float rate, float range, Map<String, Float> params) {
         super(rate, range, params);
@@ -32,5 +32,13 @@ public class GenerateCurrencyAction extends DoNothingAction {
             throw new RuntimeException(e);
         }
         return true;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }

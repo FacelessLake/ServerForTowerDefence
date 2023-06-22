@@ -3,15 +3,21 @@ package team.boars.gameactor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import team.boars.config.config_classes.BuildingConfig;
+import team.boars.config.config_classes.BuildingUpgradeConfig;
+import team.boars.config.config_classes.UpgradeConfig;
 import team.boars.gameactor.action.Action;
+import team.boars.gameactor.action.GenerateCurrencyAction;
 import team.boars.gameactor.priority.Priority;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Building implements GameActor, Pool.Poolable {
     private final int id;
     private int health;
     private final int maxHealth;
     private final Priority priority;
-    private Vector2 position;
+    private final Vector2 position;
     private final String name;
     private final Action action;
     private final int demolitionCurrency;
@@ -23,6 +29,7 @@ public class Building implements GameActor, Pool.Poolable {
     private int buildHealthRate;
     private float buildTimer;
     private float buildTimerStepCurrent;
+    private final Set<Integer> boughtUpgrades;
     private static final float buildTimerStep = 0.5f;
 
     public Building(BuildingConfig config, Action action, Vector2 position) {
@@ -38,7 +45,7 @@ public class Building implements GameActor, Pool.Poolable {
         actionTimer = action.getRate();
         target = null;
         actorType = ActorType.Building;
-
+        boughtUpgrades = new HashSet<>();
         if (id != 0)
             startConstruction();
     }
@@ -58,6 +65,21 @@ public class Building implements GameActor, Pool.Poolable {
         health -= damage;
         if (health < 0) health = 0;
         return health;
+    }
+
+    public void applyUpgrade(BuildingUpgradeConfig upgrade, int index) {
+        if (boughtUpgrades.contains(index))
+            return;
+        for (UpgradeConfig u : upgrade.upgrades) {
+            switch (u.upgradedParameter) {
+                case "actionRate" -> action.setRate(action.getRate() * u.modifier);
+                case "value" -> {
+                    GenerateCurrencyAction gAction = (GenerateCurrencyAction) action;
+                    (gAction).setValue((int) (gAction.getValue() * u.modifier));
+                }
+            }
+        }
+        boughtUpgrades.add(index);
     }
 
     @Override

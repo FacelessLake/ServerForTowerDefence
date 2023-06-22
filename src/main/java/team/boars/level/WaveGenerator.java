@@ -70,7 +70,7 @@ public class WaveGenerator {
         } else if (waveTimer <= 0 && !isWaveActive) {
             isWaveActive = true;
             enemiesDepleted = 0;
-            enemyTimer = activeWave.enemyInterval;
+            enemyTimer = 0;
         }
     }
 

@@ -1,4 +1,5 @@
 package team.boars.config.config_classes;
+
 import java.util.List;
 
 public class TechTreeNodeConfig {

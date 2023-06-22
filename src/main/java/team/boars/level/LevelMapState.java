@@ -20,12 +20,7 @@ public class LevelMapState {
     }
 
     public Vector2 getPath(Vector2 startPosition, Vector2 targetPosition) {
-        Queue<SearchNode> frontier = new PriorityQueue<>(10, new Comparator<SearchNode>() {
-            @Override
-            public int compare(SearchNode o1, SearchNode o2) {
-                return (int) (o1.priority - o2.priority);
-            }
-        });
+        Queue<SearchNode> frontier = new PriorityQueue<>(10, (o1, o2) -> (int) (o1.priority - o2.priority));
 
         Tile startNode = positionToTile(startPosition.x, startPosition.y);
         Tile targetNode = positionToTile(targetPosition.x, targetPosition.y);
@@ -69,8 +64,8 @@ public class LevelMapState {
     }
 
     public Tile positionToTile(float x, float y) {
-        int gridX = (int) ((x - LevelView.GRID_CORNER_X)/LevelView.TilE_SIZE);
-        int gridY = (int) ((y - LevelView.GRID_CORNER_Y)/LevelView.TilE_SIZE);
+        int gridX = (int) ((x - LevelView.GRID_CORNER_X) / LevelView.TilE_SIZE);
+        int gridY = (int) ((y - LevelView.GRID_CORNER_Y) / LevelView.TilE_SIZE);
         return mapArr[gridX][gridY];
     }
 

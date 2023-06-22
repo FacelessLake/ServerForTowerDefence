@@ -22,12 +22,12 @@ import static team.boars.server.Main.*;
 public class LevelController {
     private static final int PATHFINDING_UPDATE_RATE = 0; //optional parameter for optimization.
     private final StateHolder levelState;
-    private WaveGenerator waveGenerator;
+    private final WaveGenerator waveGenerator;
     private float pathfindingTimer;
-    private List<Projectile> projectiles = new ArrayList<>();
-    private List<Projectile> deadProjectiles = new ArrayList<>();
-    private float actorStateTimer = 0.3f;
-    private boolean isActive = true;
+    private final List<Projectile> projectiles;
+    private final List<Projectile> deadProjectiles;
+    private float actorStateTimer;
+    private boolean isActive;
 
     public LevelController(Creator creator, int levelID) {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
@@ -36,6 +36,10 @@ public class LevelController {
         eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y, 0));
         pathfindingTimer = 0;
         waveGenerator = new WaveGenerator(levelConfig);
+        projectiles = new ArrayList<>();
+        deadProjectiles = new ArrayList<>();
+        actorStateTimer = 0.1f;
+        isActive = true;
         waveGenerator.start();
     }
 
@@ -65,13 +69,13 @@ public class LevelController {
         if (pathfindingTimer <= 0 && PATHFINDING_UPDATE_RATE != 0) pathfindingTimer = PATHFINDING_UPDATE_RATE;
         else pathfindingTimer -= delta;
         actorStateTimer -= delta;
-        if (actorStateTimer <= 0){
+        if (actorStateTimer <= 0) {
             sendActorStates();
-            actorStateTimer = 0.3f;
+            actorStateTimer = 0.1f;
         }
     }
 
-    private void sendActorStates(){
+    private void sendActorStates() {
         JsonObject json = new JsonObject();
         json.addProperty("cmd", "actorStates");
         JsonArray jsonEnemiesArray = new JsonArray();
@@ -85,7 +89,7 @@ public class LevelController {
 
             jsonEnemiesArray.add(enemyJson);
         }
-        json.add("enemies",jsonEnemiesArray);
+        json.add("enemies", jsonEnemiesArray);
 
         JsonArray jsonBuildingsArray = new JsonArray();
         for (GameActor building : levelState.getBuildings().values()) {
@@ -96,7 +100,7 @@ public class LevelController {
             Tile tile = levelState.getMap().positionToTile(building.getPosition().x, building.getPosition().y);
             buildingJson.addProperty("gridX", tile.gridX);
             buildingJson.addProperty("gridY", tile.gridY);
-            buildingJson.addProperty("buildTimeRemaining", ((Building)building).getBuildTimer());
+            buildingJson.addProperty("buildTimeRemaining", ((Building) building).getBuildTimer());
             jsonBuildingsArray.add(buildingJson);
         }
         json.add("buildings", jsonBuildingsArray);

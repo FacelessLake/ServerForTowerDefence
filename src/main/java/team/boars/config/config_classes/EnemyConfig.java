@@ -12,7 +12,6 @@ public class EnemyConfig {
     public Priority priority;
     public float speed;
     public String name;
-    public String spriteName;
     public float actionRate;
     public float actionRange;
     public ActionType actionType;

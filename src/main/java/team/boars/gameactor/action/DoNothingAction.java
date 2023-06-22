@@ -5,7 +5,7 @@ import team.boars.gameactor.GameActor;
 import java.util.Map;
 
 public class DoNothingAction implements Action {
-    private final float rate;
+    private float rate;
     private final float range;
     private final static String[] argList = new String[]{};
 
@@ -27,5 +27,10 @@ public class DoNothingAction implements Action {
     @Override
     public float getRange() {
         return range;
+    }
+
+    @Override
+    public void setRate(float rate) {
+        this.rate = rate;
     }
 }

@@ -27,7 +27,7 @@ public class DamageActorEvent implements StateEvent {
         JsonObject json = new JsonObject();
         json.addProperty("cmd", "damageActor");
         json.addProperty("refID", refID);
-        json.addProperty("isEnemy", targetsEnemy);
+        json.addProperty("isEnemy", !targetsEnemy);
         json.addProperty("damage", damage);
         try {
             messageQueue.put(json);

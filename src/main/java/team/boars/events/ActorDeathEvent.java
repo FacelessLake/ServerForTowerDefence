@@ -1,9 +1,8 @@
 package team.boars.events;
 
-import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonObject;
 import team.boars.config.config_classes.EnemyConfig;
-import team.boars.level.Tile;
+
 import static team.boars.server.Main.*;
 
 public class ActorDeathEvent implements StateEvent {
@@ -22,11 +21,9 @@ public class ActorDeathEvent implements StateEvent {
             eventQueue.addStateEvent(new AlterCurrencyEvent(config.reward));
             state.getEnemies().remove(refID);
         } else {
-            Vector2 pos = state.getBuildings().get(refID).getPosition();
-            Tile tile = state.getMap().positionToTile(pos.x, pos.y);
-            state.getBuildings().remove(refID);
             int id = state.getBuildings().get(refID).getID();
-            if (id == 0){
+            state.getBuildings().remove(refID);
+            if (id == 0) {
                 eventQueue.addStateEvent(new LevelEndEvent(false, 0));
             }
         }

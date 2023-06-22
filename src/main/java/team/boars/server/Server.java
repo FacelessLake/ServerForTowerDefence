@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import team.boars.events.ActorDeathEvent;
 import team.boars.events.AlterCurrencyEvent;
 import team.boars.events.ConstructBuildingEvent;
+import team.boars.events.UpgradeBuildingEvent;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -143,6 +144,7 @@ public class Server {
                                     break;
                                 }
                                 case "upgradeBuilding": {
+                                    eventQueue.addStateEvent(new UpgradeBuildingEvent(command.getRefID(), command.getUpgradeId()));
                                     break;
                                 }
                             }
