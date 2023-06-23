@@ -69,5 +69,30 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Frost Tower",
+    "id": 3,
+    "maxHealth": 40,
+    "cost": 70,
+    "spriteName": "ice_crystal.png",
+    "demolitionCurrency": 20,
+    "actionType": "Freeze",
+    "actionRate": 5,
+    "actionRange": 150,
+    "actionParams": {
+      "duration": 2.0
+    },
+    "upgrades": [
+      {
+        "cost": 30,
+        "upgrades": [
+          {
+            "upgradedParameter": "duration",
+            "modifier": 2
+          }
+        ]
+      }
+    ]
   }
 ]

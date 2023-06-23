@@ -14,6 +14,7 @@ public interface GameActor {
     String getName();
     Action getAction();
     int applyDamage(int damage);
+    void becomeFrozen(float duration);
     void act(float delta);
     void kill();
     boolean isActive();

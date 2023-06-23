@@ -6,6 +6,7 @@ import team.boars.config.config_classes.BuildingConfig;
 import team.boars.config.config_classes.BuildingUpgradeConfig;
 import team.boars.config.config_classes.UpgradeConfig;
 import team.boars.gameactor.action.Action;
+import team.boars.gameactor.action.FreezeAction;
 import team.boars.gameactor.action.GenerateCurrencyAction;
 import team.boars.gameactor.priority.Priority;
 
@@ -65,6 +66,10 @@ public class Building implements GameActor, Pool.Poolable {
         return health;
     }
 
+    public void becomeFrozen(float duration) {
+
+    }
+
     public void applyUpgrade(BuildingUpgradeConfig upgrade, int index) {
         if (boughtUpgrades.contains(index))
             return;
@@ -74,6 +79,10 @@ public class Building implements GameActor, Pool.Poolable {
                 case "value" -> {
                     GenerateCurrencyAction gAction = (GenerateCurrencyAction) action;
                     (gAction).setValue((int) (gAction.getValue() * u.modifier));
+                }
+                case "duration" -> {
+                    FreezeAction fAction = (FreezeAction) action;
+                    (fAction).setDuration((int) (fAction.getDuration() * u.modifier));
                 }
             }
         }

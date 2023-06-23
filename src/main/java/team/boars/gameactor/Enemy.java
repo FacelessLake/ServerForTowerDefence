@@ -21,6 +21,7 @@ public class Enemy implements GameActor {
     private int refID;
     private GameActor target;
     private Vector2 moveTarget;
+    private float frozenDuration;
 
     public Enemy(EnemyConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -35,6 +36,7 @@ public class Enemy implements GameActor {
         actionTimer = action.getRate();
         target = null;
         actorType = ActorType.Enemy;
+        frozenDuration = 0;
     }
 
     public Enemy(EnemyConfig config, Action action) {
@@ -50,6 +52,11 @@ public class Enemy implements GameActor {
         health -= damage;
         if (health < 0) health = 0;
         return health;
+    }
+
+    @Override
+    public void becomeFrozen(float duration) {
+        frozenDuration = duration;
     }
 
     @Override
@@ -94,13 +101,21 @@ public class Enemy implements GameActor {
 
     @Override
     public void act(float delta) {
-        move(delta);
+        if (frozenDuration == 0) {
+            move(delta);
 
-        if (action.getRate() < 0) return;
-        actionTimer -= delta;
-        if (actionTimer <= 0) {
-            if (action.call(this, delta, target))
-                actionTimer = action.getRate();
+            if (action.getRate() < 0) return;
+            actionTimer -= delta;
+            if (actionTimer <= 0) {
+                if (action.call(this, delta, target))
+                    actionTimer = action.getRate();
+            }
+        }
+        else {
+            frozenDuration -= delta;
+            if (frozenDuration<0){
+                frozenDuration = 0;
+            }
         }
     }
 

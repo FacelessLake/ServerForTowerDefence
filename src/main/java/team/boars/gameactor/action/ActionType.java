@@ -4,5 +4,6 @@ public enum ActionType {
     Default,
     DoNothing,
     BasicAttack,
+    Freeze,
     GenerateCurrency
 }
